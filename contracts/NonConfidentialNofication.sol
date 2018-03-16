@@ -9,8 +9,11 @@ contract NonConfidentialNofication {
     // Message
     bytes32 public messageHash;
     string public message;
-    // Time limit in days
+    // Time limit in days (in seconds)
+    // See units: http://solidity.readthedocs.io/en/develop/units-and-global-variables.html?highlight=timestamp#time-units
     uint public term; 
+    // Start time
+    uint public start; 
 
     // Possible states
     enum State {created, cancelled, accepted, finished }
@@ -22,6 +25,7 @@ contract NonConfidentialNofication {
         sender = msg.sender;
         receiver = _receiver;
         messageHash = _messageHash;
+        start = now; // now = block.timestamp
         term = _term;
         state = State.created;
         StateInfo(state);
@@ -42,7 +46,7 @@ contract NonConfidentialNofication {
     }
 
     function cancel() public {
-        require(1==1); // Check term and block.timestamp
+        require(now >= start+term); // Check term and now (block.timestamp)
         require((msg.sender==sender && state==State.created) || (msg.sender==receiver && state==State.accepted));
         state = State.cancelled;
         StateInfo(state);
