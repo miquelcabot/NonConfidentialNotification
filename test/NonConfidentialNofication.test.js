@@ -12,7 +12,7 @@ beforeEach(async () => {
   accounts = await web3.eth.getAccounts();
 
   nonConfidentialNofication = await new web3.eth.Contract(JSON.parse(interface))
-    .deploy({ data: bytecode, arguments: [accounts[1], web3.utils.keccak256("Test message"), 0] })
+    .deploy({ data: bytecode, arguments: [accounts[1], web3.utils.keccak256("Test message"), 600] }) // term = 600 seconds = 10 minutes
     .send({ from: accounts[0], gas: '1000000' });
 });
 
