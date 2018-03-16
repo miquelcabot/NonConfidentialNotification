@@ -7,7 +7,7 @@ contract NonConfidentialNofication {
     address public receiver;
 
     // Message
-    string public messageHash;
+    bytes32 public messageHash;
     string public message;
     // Time limit in days
     uint public term; 
@@ -18,7 +18,7 @@ contract NonConfidentialNofication {
 
     event StateInfo( State state );
 
-    function NonConfidentialNofication(address _receiver, string _messageHash, uint _term) public {
+    function NonConfidentialNofication(address _receiver, bytes32 _messageHash, uint _term) public {
         sender = msg.sender;
         receiver = _receiver;
         messageHash = _messageHash;
@@ -35,6 +35,7 @@ contract NonConfidentialNofication {
 
     function finish(string _message) public {
         require (msg.sender==sender && state==State.accepted);
+        require (messageHash==keccak256(_message));
         message = _message;
         state = State.finished;
         StateInfo(state);
