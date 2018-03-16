@@ -14,8 +14,8 @@ const deploy = async () => {
   console.log('Attempting to deploy from account', accounts[0]);
 
   const result = await new web3.eth.Contract(JSON.parse(interface))
-    .deploy({ data: bytecode })
-    .send({ gas: '1000000', from: accounts[0] });
+    .deploy({ data: bytecode, arguments: [accounts[1], web3.utils.keccak256("Test message"), 600] }) // term = 600 seconds = 10 minutes
+    .send({ from: accounts[0], gas: '1000000' });
 
   console.log(interface);
   console.log('Contract deployed to', result.options.address);
