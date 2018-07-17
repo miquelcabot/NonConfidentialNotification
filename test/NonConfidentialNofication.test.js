@@ -13,7 +13,7 @@ beforeEach(async () => {
 
   nonConfidentialNofication = await new web3.eth.Contract(JSON.parse(interface))
     .deploy({ data: bytecode, arguments: [accounts[1], web3.utils.keccak256("Test message"), 600] }) // term = 600 seconds = 10 minutes
-    .send({ from: accounts[0], gas: '1000000' });
+    .send({ from: accounts[0], gas: '1000000', value: '1' });  // Value: '1' sets the deposit to 1 wei
 });
 
 describe('NonConfidentialNofication Contract', () => {

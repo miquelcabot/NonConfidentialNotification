@@ -21,7 +21,8 @@ contract NonConfidentialNofication {
 
     event StateInfo( State state );
 
-    function NonConfidentialNofication(address _receiver, bytes32 _messageHash, uint _term) public {
+    function NonConfidentialNofication(address _receiver, bytes32 _messageHash, uint _term) public payable {
+        require (msg.value>0); // Requires that the sender send a deposit of minimum 1 wei (>0 wei)
         sender = msg.sender;
         receiver = _receiver;
         messageHash = _messageHash;
@@ -41,6 +42,7 @@ contract NonConfidentialNofication {
         require (msg.sender==sender && state==State.accepted);
         require (messageHash==keccak256(_message));
         message = _message;
+        sender.transfer(this.balance); // Sender receives the refund of the deposit
         state = State.finished;
         StateInfo(state);
     }
@@ -48,6 +50,9 @@ contract NonConfidentialNofication {
     function cancel() public {
         require(now >= start+term); // Check term and now (block.timestamp)
         require((msg.sender==sender && state==State.created) || (msg.sender==receiver && state==State.accepted));
+        if (msg.sender==sender && state==State.created) {
+            sender.transfer(this.balance); // Sender receives the refund of the deposit
+        }
         state = State.cancelled;
         StateInfo(state);
     }
