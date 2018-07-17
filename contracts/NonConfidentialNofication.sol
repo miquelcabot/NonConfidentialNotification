@@ -9,7 +9,7 @@ contract NonConfidentialNofication {
     // Message
     bytes32 public messageHash;
     string public message;
-    // Time limit in days (in seconds)
+    // Time limit (in seconds)
     // See units: http://solidity.readthedocs.io/en/develop/units-and-global-variables.html?highlight=timestamp#time-units
     uint public term; 
     // Start time
