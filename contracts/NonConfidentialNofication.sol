@@ -39,6 +39,7 @@ contract NonConfidentialNofication {
     }
 
     function finish(string _message) public {
+        require(now < start+term); // It's not possible to finish after deadline
         require (msg.sender==sender && state==State.accepted);
         require (messageHash==keccak256(_message));
         message = _message;
@@ -48,7 +49,7 @@ contract NonConfidentialNofication {
     }
 
     function cancel() public {
-        require(now >= start+term); // Check term and now (block.timestamp)
+        require(now >= start+term); //  It's not possible to cancel before deadline
         require((msg.sender==sender && state==State.created) || (msg.sender==receiver && state==State.accepted));
         if (msg.sender==sender && state==State.created) {
             sender.transfer(this.balance); // Sender receives the refund of the deposit
