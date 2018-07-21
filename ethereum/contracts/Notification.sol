@@ -1,7 +1,44 @@
-pragma solidity ^0.4.11;
+pragma solidity ^0.4.24;
+
+contract NotificationFactory {
+    mapping(address => address[]) public senderNotifications;
+    mapping(address => address[]) public receiverNotifications;
+    address[] public notifications;
+
+    function createNotification(address _receiver, bytes32 _messageHash, uint _term) public payable {
+        address newNotification = (new Notification).value(msg.value)(msg.sender, _receiver, _messageHash, _term);
+        notifications.push(newNotification);
+        senderNotifications[msg.sender].push(newNotification);
+        receiverNotifications[_receiver].push(newNotification);
+    }
+
+    function getSenderNotifications(address _sender) public view returns (address[]) {
+        return senderNotifications[_sender];
+    }
+
+    function getSenderNotificationsCount(address _sender) public view returns (uint) {
+        return senderNotifications[_sender].length;
+    }
+
+    function getReceiverNotifications(address _receiver) public view returns (address[]) {
+        return receiverNotifications[_receiver];
+    }
+
+    function getReceiverNotificationsCount(address _receiver) public view returns (uint) {
+        return receiverNotifications[_receiver].length;
+    }
+
+    function getNotifications() public view returns (address[]) {
+        return notifications;
+    }
+
+    function getNotificationsCount() public view returns (uint) {
+        return notifications.length;
+    }
+}
 
 // Notificació certificada no confidencial, d'un sol ús
-contract NonConfidentialNofication {
+contract Notification {  //NonConfidentialNotification
     // Parties involved
     address public sender;
     address public receiver;
@@ -21,9 +58,9 @@ contract NonConfidentialNofication {
 
     event StateInfo( State state );
 
-    function NonConfidentialNofication(address _receiver, bytes32 _messageHash, uint _term) public payable {
+    constructor (address _sender, address _receiver, bytes32 _messageHash, uint _term) public payable {
         require (msg.value>0); // Requires that the sender send a deposit of minimum 1 wei (>0 wei)
-        sender = msg.sender;
+        sender = _sender;
         receiver = _receiver;
         messageHash = _messageHash;
         start = now; // now = block.timestamp
@@ -69,4 +106,27 @@ contract NonConfidentialNofication {
             return "finished";
         } 
     }
+
+   /* function getSummary() public view returns (address, address, uint, bytes32, string, uint, uint, string) {
+        string memory _state;
+        if (state==State.created) {
+            _state = "created";
+        } else if (state==State.cancelled) {
+            _state = "cancelled";
+        } else if (state==State.accepted) {
+            _state = "accepted";
+        } else if (state==State.finished) {
+            _state = "finished";
+        } 
+        return (
+          sender,
+          receiver,
+          this.balance,
+          messageHash,
+          message,
+          term,
+          start,
+          _state
+        );
+    }*/
 }

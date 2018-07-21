@@ -1,36 +1,51 @@
 {
   "name": "nonconfidentialnofication",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "Certified non confidential notification",
-  "main": "index.js",
+  "homepage": "https://secomuib.github.io/nonconfidentialnofication/",
   "directories": {
     "doc": "doc",
     "test": "test"
   },
   "scripts": {
-    "start": "node deploy.js",
-    "test": "mocha"
+    "ethereum_compile": "node ./ethereum/compile.js",
+    "ethereum_deploy": "node ./ethereum/deploy.js",
+    "ethereum_test": "mocha",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/uibethereum/NonConfidentialNofication.git"
+    "url": "git+https://github.com/secomuib/NonConfidentialNofication.git"
   },
   "keywords": [
     "ethereum",
     "solidity",
     "blockchain"
   ],
-  "author": "Miquel A. Cabot",
+  "author": "Seguretat i comerç electrònic (SECOM)",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/uibethereum/NonConfidentialNofication/issues"
+    "url": "https://github.com/secomuib/NonConfidentialNofication/issues"
   },
-  "homepage": "https://github.com/uibethereum/NonConfidentialNofication#readme",
+  "private": true,
   "dependencies": {
-    "ganache-cli": "^6.1.6",
-    "mocha": "^5.2.0",
-    "solc": "^0.4.24",
-    "truffle-hdwallet-provider": "0.0.5",
+    "fs-extra": "^6.0.1",
+    "ganache-cli": "^6.0.3",
+    "gh-pages": "^1.2.0",
+    "mocha": "^5.0.1",
+    "react": "^16.4.1",
+    "react-dom": "^16.4.1",
+    "react-router-dom": "^4.3.1",
+    "react-scripts": "1.1.4",
+    "semantic-ui-css": "^2.3.3",
+    "semantic-ui-react": "^0.81.3",
+    "solc": "^0.4.20",
+    "truffle-hdwallet-provider": "0.0.3",
     "web3": "^1.0.0-beta.26"
   }
 }
