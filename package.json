@@ -1,8 +1,8 @@
 {
-  "name": "nonconfidentialnofication",
+  "name": "nonconfidentialnotification",
   "version": "0.1.0",
   "description": "Certified non confidential notification",
-  "homepage": "https://secomuib.github.io/NonConfidentialNofication/",
+  "homepage": "https://secomuib.github.io/NonConfidentialNotification/",
   "directories": {
     "doc": "doc",
     "test": "test"
@@ -20,7 +20,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/secomuib/NonConfidentialNofication.git"
+    "url": "git+https://github.com/secomuib/NonConfidentialNotification.git"
   },
   "keywords": [
     "ethereum",
@@ -30,7 +30,7 @@
   "author": "Seguretat i comerç electrònic (SECOM)",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/secomuib/NonConfidentialNofication/issues"
+    "url": "https://github.com/secomuib/NonConfidentialNotification/issues"
   },
   "private": true,
   "dependencies": {
