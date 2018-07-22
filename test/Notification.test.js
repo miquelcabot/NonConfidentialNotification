@@ -10,10 +10,12 @@ let accounts;
 let factory;
 let notificationAddress;
 let notification;
+let gasPrice;
 
 beforeEach(async () => {
     accounts = await web3.eth.getAccounts();
-    
+    gasPrice = await web3.eth.getGasPrice();
+
     factory = await new web3.eth.Contract(JSON.parse(compiledFactory.interface))
         .deploy({ data: compiledFactory.bytecode, arguments: [] })
         .send({ from: accounts[0], gas: '3000000' });
@@ -82,5 +84,19 @@ describe('Notifications', () => {
         var state = await notification.methods.getState().call();
         assert.equal(message, "Test message");
         assert.equal(state, "finished");
+      });
+
+      it("sender receives the refund of the deposit", async function() {
+        await notification.methods.accept().send({ from: accounts[1] });
+
+        var balanceSender1 = await web3.eth.getBalance(accounts[0]);
+        var balanceContract = await web3.eth.getBalance(notification.options.address);
+        var transaction = await notification.methods.finish("Test message").send({ from: accounts[0] });
+
+        var receipt = await web3.eth.getTransactionReceipt(transaction.transactionHash);
+
+        var balanceSender2 = await web3.eth.getBalance(accounts[0]);
+
+        assert(((balanceSender2-balanceSender1)+(receipt.cumulativeGasUsed*gasPrice))>=balanceContract);
       });
 });
