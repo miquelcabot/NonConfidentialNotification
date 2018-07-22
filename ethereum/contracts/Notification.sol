@@ -66,13 +66,13 @@ contract Notification {  //NonConfidentialNotification
         start = now; // now = block.timestamp
         term = _term;
         state = State.created;
-        StateInfo(state);
+        emit StateInfo(state);
     }
 
     function accept() public {
         require (msg.sender==receiver && state==State.created);
         state = State.accepted;
-        StateInfo(state);
+        emit StateInfo(state);
     }
 
     function finish(string _message) public {
@@ -82,7 +82,7 @@ contract Notification {  //NonConfidentialNotification
         message = _message;
         sender.transfer(this.balance); // Sender receives the refund of the deposit
         state = State.finished;
-        StateInfo(state);
+        emit StateInfo(state);
     }
 
     function cancel() public {
@@ -92,7 +92,7 @@ contract Notification {  //NonConfidentialNotification
             sender.transfer(this.balance); // Sender receives the refund of the deposit
         }
         state = State.cancelled;
-        StateInfo(state);
+        emit StateInfo(state);
     }
 
     function getState() public view returns (string) {
