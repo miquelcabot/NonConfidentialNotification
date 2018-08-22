@@ -107,7 +107,7 @@ contract Notification {  //NonConfidentialNotification
         } 
     }
 
-   /* function getSummary() public view returns (address, address, uint, bytes32, string, uint, uint, string) {
+    function getSummary() public view returns (address, address, uint, bytes32, string, uint, uint, string) {
         string memory _state;
         if (state==State.created) {
             _state = "created";
@@ -128,5 +128,5 @@ contract Notification {  //NonConfidentialNotification
           start,
           _state
         );
-    }*/
+    }
 }
